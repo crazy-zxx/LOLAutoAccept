@@ -123,7 +123,6 @@ class LOLUI:
         self.root.resizable(False, False)
 
         self.lol = LOL()
-
         self.stop_event = threading.Event()
         self.thread = None
 
