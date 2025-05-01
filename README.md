@@ -1,6 +1,6 @@
 # 英雄联盟自动接受对局工具
 
-![](img/ui.png)
+![](img/lol-auto-accept-ui.png)
 
 
 ## 开发环境
