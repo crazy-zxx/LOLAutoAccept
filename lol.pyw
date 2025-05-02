@@ -60,6 +60,32 @@ class LOL:
                 # 检查并更新用户的游戏状态信息
                 if self.update_game_status():
 
+                    # 补充骰子
+                    dice_url = "https://comm.ams.game.qq.com/ide/"
+                    headers = {
+                        "content-type": "application/x-www-form-urlencoded",
+                        "cookie": f"uin={uin}; skey={skey};"
+                    }
+                    # 大乱斗
+                    data = {
+                        "iChartId": "378916",
+                        "iSubChartId": "378916",
+                        "sIdeToken": "Rb22Nt",
+                        "sArea": "6",
+                    }
+                    # 无限火力
+                    infinite_data = {
+                        'iChartId': '393050',
+                        'iSubChartId': '393050',
+                        'sIdeToken': '6f9Yvi',
+                        "sArea": "6",
+                    }
+                    result = requests.post(url=dice_url, headers=headers, data=data, verify=False)
+                    print(json.loads(result.content.decode('utf-8'))['sMsg'])
+                    result = requests.post(url=dice_url, headers=headers, data=infinite_data, verify=False)
+                    print(json.loads(result.content.decode('utf-8'))['sMsg'])
+
+
                     # 查询对局寻找状态
                     state_url = self.__url + '/lol-lobby/v2/lobby/matchmaking/search-state'
                     # 查询对局状态：未开始寻找（Invalid）、寻找中（Searching）、找到（Found）
@@ -67,31 +93,6 @@ class LOL:
                     game_state = state_resp.json()['searchState']
                     # 如果找到对局
                     if game_state == 'Found':
-                        # 补充骰子
-                        dice_url = "https://comm.ams.game.qq.com/ide/"
-                        headers = {
-                            "content-type": "application/x-www-form-urlencoded",
-                            "cookie": f"uin={uin}; skey={skey};"
-                        }
-                        # 大乱斗
-                        data = {
-                            "iChartId": "378916",
-                            "iSubChartId": "378916",
-                            "sIdeToken": "Rb22Nt",
-                            "sArea": "6",
-                        }
-                        # 无限火力
-                        infinite_data = {
-                            'iChartId': '393050',
-                            'iSubChartId': '393050',
-                            'sIdeToken': '6f9Yvi',
-                            "sArea": "6",
-                        }
-                        result = requests.post(url=dice_url, headers=headers, data=data, verify=False)
-                        print(json.loads(result.content.decode('utf-8'))['sMsg'])
-                        result = requests.post(url=dice_url, headers=headers, data=infinite_data, verify=False)
-                        print(json.loads(result.content.decode('utf-8'))['sMsg'])
-
                         # 自动接受对局
                         accept_url = self.__url + '/lol-matchmaking/v1/ready-check/accept'
                         accept_resp = requests.post(accept_url, headers=self.__headers, verify=False)
